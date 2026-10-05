@@ -57,6 +57,25 @@ Reports and history exclude query strings, headers, request/response bodies and 
 
 Exit codes: `0` for a nonempty all-pass run, `1` for failed checks, `2` for invalid input/output. Existing output files are never overwritten. Headless mode does not save database history and sends the configured requests without a GUI confirmation; inspect imported suites before running them.
 
+## Local database backup
+
+From the source installation, create a consistent backup of saved suites and history:
+
+```powershell
+.\.venv\Scripts\python.exe -m benchdesk.backup --output data/backup-2026-10-05.db
+```
+
+The default source is `%LOCALAPPDATA%\BenchDesk\benchdesk.db`; override it with
+`--source data/test.db`. SQLite's backup API includes committed WAL data even while
+the app is open. Existing destinations are never overwritten, missing source files
+are not created, and failed copies are removed. A busy backup is aborted after about
+15 seconds; retry later. Backups are unencrypted and may contain private suite data.
+Keep them outside Git. This is a source CLI utility, not a new GUI button.
+
+To inspect a backup, launch with `--database path/to/backup.db`. This opens a working
+database and can modify it, so inspect a spare copy rather than your only backup.
+Automatic restore and history pruning are not implemented.
+
 ## Windows build
 
 ```powershell
@@ -78,7 +97,7 @@ To smoke-test the packaged Qt window without manual clicks, run `dist/BenchDesk/
 
 Tests use temporary databases, mocked HTTP transports, a real localhost demo, and Qt's offscreen platform. GitHub Actions runs the same checks on Windows. `scripts/preview.py` captures the actual local GUI with demo data; it does not generate a mockup.
 
-Local verification: 47 tests passed on Windows/Python 3.11, Ruff and dependency checks passed, and the packaged `.exe` completed both a Qt smoke run and a headless HTTP/report run. Testing on another Windows PC is still pending.
+Local verification: 53 source tests passed on Windows/Python 3.11 and Ruff checks passed. The earlier packaged `.exe` completed both a Qt smoke run and a headless HTTP/report run; it does not include the new standalone backup module. Testing on another Windows PC is still pending.
 
 [Architecture](docs/ARCHITECTURE.md) · [Development notes](docs/DEVELOPMENT.md) · [Task list](TASKS.md)
 

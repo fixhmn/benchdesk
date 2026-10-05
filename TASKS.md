@@ -12,7 +12,8 @@
 - [x] Tests for runner, models, persistence, real HTTP, and GUI
 - [x] Screenshot generated from an actual demo run
 - [x] Validate the packaged Windows application (Qt smoke + actual HTTP/report run)
-- [ ] Verify GitHub-hosted Windows checks
+- [x] Verify GitHub-hosted Windows checks (successful run after module-invocation fix)
 - [ ] Independent usability test on another Windows PC
-- [ ] Data retention controls and safe local backups
+- [x] Consistent SQLite backup CLI with WAL and no-overwrite tests
+- [ ] Data retention controls and restore UI
 - [ ] Review licenses and signing before distributing binaries
